@@ -52,5 +52,12 @@ stages:
       runOnce:
         deploy:
           steps:
-
+          - task: AzureRmWebAppDeployment@4
+            inputs:
+              ConnectionType: 'AzureRM'
+              azureSubscription: 'Visual Studio Ultimate with MSDN(be3aa8d6-3fd0-46a1-96fd-e7f6f61dd24e)'
+              appType: 'webAppLinux'
+              WebAppName: 'nnepal-appconfig-dev'
+              packageForLinux: '$(System.DefaultWorkingDirectory)/**/*.zip'
+              RuntimeStack: 'DOTNETCORE|2.1'
 
