@@ -61,7 +61,7 @@ stages:
               appType: 'webAppLinux'
               WebAppName: 'nnepal-appconfig-dev'
               packageForLinux: '$(Pipeline.Workspace)/**/Microsoft.Azure.AppConfiguration.WebDemo.zip'
-              AppSettings: '-WebDemo_Settings_AppName:$(AppConfigDemo-Dev-Color)'
+              AppSettings: '-WebDemo_Settings_AppName $(AppConfigDemo-Dev-Color)'
 
 - stage: QA
   displayName: QA
@@ -85,5 +85,5 @@ stages:
               appType: 'webAppLinux'
               WebAppName: 'nnepal-appconfig-qa'
               packageForLinux: '$(Pipeline.Workspace)/**/Microsoft.Azure.AppConfiguration.WebDemo.zip'
-              AppSettings: '-WebDemo_Settings_AppName:$(AppConfigDemo-Qa-Color)'                          
+              AppSettings: '-WebDemo_Settings_AppName $(AppConfigDemo-Qa-Color)'                          
 
