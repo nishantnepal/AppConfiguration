@@ -61,7 +61,7 @@ stages:
               appType: 'webAppLinux'
               WebAppName: 'nnepal-appconfig-dev'
               packageForLinux: '$(Pipeline.Workspace)/**/Microsoft.Azure.AppConfiguration.WebDemo.zip'
-              AppSettings: '-WebDemo_Settings_BackgroundColor $(AppConfigDemo-Dev-Color) -WebDemo_Settings_Messages "Set From Devops Dev Stage"'
+              AppSettings: '-WebDemo__Settings__BackgroundColor $(AppConfigDemo-Dev-Color) -WebDemo__Settings__Messages "Set From Devops Dev Stage"'
 
 - stage: QA
   displayName: QA
