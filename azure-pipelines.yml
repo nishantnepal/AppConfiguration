@@ -42,6 +42,8 @@ stages:
 - stage: Dev
   displayName: Dev
   dependsOn: Build 
+  variables:
+  - group: AppConfigDemo-Dev
   jobs:
   - deployment:  Deploy
     displayName: Deploy    
@@ -58,11 +60,14 @@ stages:
               azureSubscription: 'Visual Studio Ultimate with MSDN(be3aa8d6-3fd0-46a1-96fd-e7f6f61dd24e)'
               appType: 'webAppLinux'
               WebAppName: 'nnepal-appconfig-dev'
-              packageForLinux: '$(Pipeline.Workspace)/**/Microsoft.Azure.AppConfiguration.WebDemo.zip'  
+              packageForLinux: '$(Pipeline.Workspace)/**/Microsoft.Azure.AppConfiguration.WebDemo.zip'
+              AppSettings: 'WebDemo_Settings_AppName:$(AppConfigDemo-Dev-Color)'
 
 - stage: QA
   displayName: QA
   dependsOn: Dev 
+  variables:
+  - group: AppConfigDemo-QA
   jobs:
   - deployment:  Deploy
     displayName: Deploy    
@@ -79,5 +84,6 @@ stages:
               azureSubscription: 'Visual Studio Ultimate with MSDN(be3aa8d6-3fd0-46a1-96fd-e7f6f61dd24e)'
               appType: 'webAppLinux'
               WebAppName: 'nnepal-appconfig-qa'
-              packageForLinux: '$(Pipeline.Workspace)/**/Microsoft.Azure.AppConfiguration.WebDemo.zip'                          
+              packageForLinux: '$(Pipeline.Workspace)/**/Microsoft.Azure.AppConfiguration.WebDemo.zip'
+              AppSettings: 'WebDemo_Settings_AppName:$(AppConfigDemo-Dev-Color)'                          
 
