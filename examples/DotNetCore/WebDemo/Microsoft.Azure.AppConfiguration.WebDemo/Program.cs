@@ -44,7 +44,7 @@ namespace Microsoft.Azure.AppConfiguration.WebDemo
                                        .ConfigureRefresh((refreshOptions) =>
                                        {
                                            // Indicates that all configuration should be refreshed when the given key has changed.
-                                           //refreshOptions.Register(key: "WebDemo:Sentinel", refreshAll: true);
+                                           refreshOptions.Register(key: "WebDemo:Sentinel", refreshAll: true);
                                        });
                             });
                         }
