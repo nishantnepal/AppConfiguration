@@ -1,0 +1,8 @@
+{
+  "WebDemo": {
+    "Settings": {
+      "Messages": "Hello There. Thanks for using Azure App Configuration.",
+      "BackgroundColor": "Orange"
+    }
+  }
+}

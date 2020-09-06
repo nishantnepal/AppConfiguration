@@ -34,16 +34,17 @@ namespace Microsoft.Azure.AppConfiguration.WebDemo
 
                         var settings = builder.Build();
                         string appConfigurationEndpoint = settings["AzureAppConfigurationEndpoint"];
+                        string environment = settings["AzureAppConfigurationEnvironment"];
                         if (!string.IsNullOrEmpty(appConfigurationEndpoint))
                         {
                             builder.AddAzureAppConfiguration(options =>
                             {
                                 options.Connect(new Uri(appConfigurationEndpoint), new DefaultAzureCredential())
-                                       .Select(keyFilter: "WebDemo:*")
+                                       .Select(keyFilter: "WebDemo:*",labelFilter: environment)
                                        .ConfigureRefresh((refreshOptions) =>
                                        {
                                            // Indicates that all configuration should be refreshed when the given key has changed.
-                                           refreshOptions.Register(key: "WebDemo:Sentinel", refreshAll: true);
+                                           //refreshOptions.Register(key: "WebDemo:Sentinel", refreshAll: true);
                                        });
                             });
                         }
