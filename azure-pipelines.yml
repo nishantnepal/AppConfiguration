@@ -43,7 +43,7 @@ stages:
   displayName: Dev
   dependsOn: Build 
   variables:
-  - group: AppConfigDemo-Dev
+  - group: AppConfig
   jobs:
   - deployment:  Deploy
     displayName: Deploy    
@@ -54,6 +54,7 @@ stages:
       runOnce:
         deploy:
           steps:
+
           - task: AzureRmWebAppDeployment@4
             inputs:
               ConnectionType: 'AzureRM'
@@ -61,7 +62,7 @@ stages:
               appType: 'webAppLinux'
               WebAppName: 'nnepal-appconfig-dev'
               packageForLinux: '$(Pipeline.Workspace)/**/Microsoft.Azure.AppConfiguration.WebDemo.zip'
-              AppSettings: '-WebDemo__Settings__BackgroundColor $(AppConfigDemo-Dev-Color) -WebDemo__Settings__Messages "Set From Devops Dev Stage"'
+              AppSettings: '-AzureAppConfigurationEndpoint $(AppConfigUrl) -AzureAppConfigurationEnvironment "Dev"'
 
 - stage: QA
   displayName: QA
@@ -85,5 +86,5 @@ stages:
               appType: 'webAppLinux'
               WebAppName: 'nnepal-appconfig-qa'
               packageForLinux: '$(Pipeline.Workspace)/**/Microsoft.Azure.AppConfiguration.WebDemo.zip'
-              AppSettings: '-WebDemo__Settings__BackgroundColor $(AppConfigDemo-Qa-Color) -WebDemo__Settings__Messages "Set From Devops QA Stage"'                          
+              AppSettings: '-AzureAppConfigurationEndpoint $(AppConfigUrl) -AzureAppConfigurationEnvironment "QA"'
 
