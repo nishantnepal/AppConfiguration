@@ -26,7 +26,7 @@ namespace Microsoft.Azure.AppConfiguration.WebDemo.Pages
             BrowserRendererEnabled = _featureManager.IsEnabledAsync("BrowserRenderer").Result;
             if (BrowserRendererEnabled)
             {
-                Message = "You are using chrome - you get 50% off.";
+                Message = "Congrats - your are eligible for a discount because your browser qualifies.";
             }
             else
             {
