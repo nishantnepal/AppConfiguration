@@ -1,8 +1,12 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
+using Microsoft.Azure.AppConfiguration.WebDemo.FeatureManagement;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Hosting;
+using Microsoft.FeatureManagement;
 
 namespace Microsoft.Azure.AppConfiguration.WebDemo
 {
@@ -22,6 +26,8 @@ namespace Microsoft.Azure.AppConfiguration.WebDemo
 
             // We add a Settings model to the service container, which takes its values from the applications configuration.
             services.Configure<Settings>(Configuration.GetSection("WebDemo:Settings"));
+            services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            services.AddFeatureManagement().AddFeatureFilter<BrowserFilter>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

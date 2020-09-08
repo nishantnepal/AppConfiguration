@@ -1,7 +1,9 @@
 ﻿using System;
 using Azure.Identity;
+using Azure.Security.KeyVault.Secrets;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Configuration.AzureAppConfiguration;
 using Microsoft.Extensions.Hosting;
 
 namespace Microsoft.Azure.AppConfiguration.WebDemo
@@ -34,20 +36,43 @@ namespace Microsoft.Azure.AppConfiguration.WebDemo
 
                         var settings = builder.Build();
                         string appConfigurationEndpoint = settings["AzureAppConfigurationEndpoint"];
-                        string environment = settings["AzureAppConfigurationEnvironment"];
-                        if (!string.IsNullOrEmpty(appConfigurationEndpoint))
+                        string environment = settings["AzureAppConfigurationEnvironment"] ?? "Dev";
+
+                        string appConfigConnectionString = settings["AzureAppConfigurationConnectionStringEnvironment"];
+
+                        builder.AddAzureAppConfiguration(options =>
                         {
-                            builder.AddAzureAppConfiguration(options =>
+                            if (!string.IsNullOrWhiteSpace(appConfigConnectionString))
+                                options.Connect(appConfigConnectionString)
+                                //options.Connect(new Uri(appConfigurationEndpoint), new DefaultAzureCredential())
+                                    //.Select(keyFilter: "WebDemo:*", labelFilter: environment)
+                                    //.Select(keyFilter: KeyFilter.Any, labelFilter: environment)
+                                    .ConfigureRefresh((refreshOptions) =>
+                                    {
+                                        // Indicates that all configuration should be refreshed when the given key has changed.
+                                        refreshOptions.Register(key: "WebDemo:Sentinel", refreshAll: true);
+                                    })
+                                    .UseFeatureFlags();
+                            //.ConfigureKeyVault(kv =>
+                            //    kv.Register(new SecretClient(new Uri("https://nnepal-kv-01.vault.azure.net/"), )));
+                            else
                             {
-                                options.Connect(new Uri(appConfigurationEndpoint), new DefaultAzureCredential())
-                                       .Select(keyFilter: "WebDemo:*",labelFilter: environment)
-                                       .ConfigureRefresh((refreshOptions) =>
-                                       {
-                                           // Indicates that all configuration should be refreshed when the given key has changed.
-                                           refreshOptions.Register(key: "WebDemo:Sentinel", refreshAll: true);
-                                       });
-                            });
-                        }
+                                if (!string.IsNullOrEmpty(appConfigurationEndpoint))
+                                {
+                                    options.Connect(new Uri(appConfigurationEndpoint), new DefaultAzureCredential())
+                                        .Select(keyFilter: "WebDemo:*", labelFilter: environment)
+                                        //.Select(keyFilter: null, labelFilter: environment)
+                                        .ConfigureRefresh((refreshOptions) =>
+                                        {
+                                            // Indicates that all configuration should be refreshed when the given key has changed.
+                                            refreshOptions.Register(key: "WebDemo:Sentinel", refreshAll: true);
+                                        }).UseFeatureFlags();
+                                }
+
+
+                            }
+
+                        });
                     });
 
                     webBuilder.UseStartup<Startup>();
