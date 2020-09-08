@@ -39,12 +39,12 @@ namespace Microsoft.Azure.AppConfiguration.WebDemo.FeatureManagement
                 return Task.FromResult(true);
             }
 
-            //if (settings.AllowedBrowsers.Any(browser => browser.Contains(Edge, StringComparison.OrdinalIgnoreCase)) && IsBrowser(Edge))
-            //{
-            //    return Task.FromResult(true);
-            //}
+            if (settings.AllowedBrowsers.Any(browser => browser.Contains(Edge, StringComparison.OrdinalIgnoreCase)) && IsEdge())
+            {
+                return Task.FromResult(true);
+            }
 
-           
+
 
             _logger.LogWarning($"The AllowedBrowsers list is empty or the current browser is not enabled for this feature");
 
